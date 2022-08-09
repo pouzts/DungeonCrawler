@@ -1,34 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using Fusion;
+using TMPro;
 
 public class Player : NetworkBehaviour
 {
     [SerializeField] private Ball prefabBall;
     [SerializeField] private RBBall prefabRBBall;
-    [Networked] private TickTimer delay {get; set;}
+    [Networked] private TickTimer delay { get; set; }
 
-    private NetworkCharacterControllerPrototype characterControllerPrototype;
-    private Vector3 forward;
-
-    private Material _material;
-    Material material
-    {
-        get
-        {
-            if (_material == null)
-                _material = GetComponentInChildren<MeshRenderer>().material;
-            return _material;
-        }
-    }
 
     [Networked(OnChanged = nameof(OnBallSpawned))]
     public NetworkBool spawned { get; set; }
 
+    private NetworkCharacterControllerPrototype characterControllerPrototype;
+    private Vector3 forward;
+    private Material _material;
     private TMP_Text _messages;
+
 
     [Rpc(RpcSources.InputAuthority, RpcTargets.All)]
     public void RPC_SendMessage(string message, RpcInfo info = default)
@@ -42,6 +32,21 @@ public class Player : NetworkBehaviour
         _messages.text += message;
     }
 
+    Material material
+    {
+        get
+        {
+            if (_material == null)
+                _material = GetComponentInChildren<MeshRenderer>().material;
+            return _material;
+        }
+    }
+
+    public override void Render()
+    {
+        material.color = Color.Lerp(material.color, Color.blue, Time.deltaTime);
+    }
+
     public static void OnBallSpawned(Changed<Player> changed)
     {
         changed.Behaviour.material.color = Color.white;
@@ -50,6 +55,7 @@ public class Player : NetworkBehaviour
     private void Awake()
     {
         characterControllerPrototype = GetComponent<NetworkCharacterControllerPrototype>();
+        forward = transform.forward;
     }
 
     private void Update()
@@ -67,12 +73,12 @@ public class Player : NetworkBehaviour
             data.direction.Normalize();
             characterControllerPrototype.Move(5 * data.direction * Runner.DeltaTime);
 
-            if (data.direction.sqrMagnitude > 0)
-                forward = data.direction;
+            if(data.direction.sqrMagnitude > 0) forward = data.direction;
 
             if (delay.ExpiredOrNotRunning(Runner))
             {
-                // transform ball
+
+                //transform ball
                 if ((data.buttons & NetworkInputData.MOUSEBUTTON1) != 0)
                 {
                     delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
@@ -83,30 +89,24 @@ public class Player : NetworkBehaviour
                         // Initialize the Ball before synchronizing it
                         o.GetComponent<Ball>().Init();
                     });
-
                     spawned = !spawned;
                 }
-                // rigid body ball
+                //rigid body ball
                 else if ((data.buttons & NetworkInputData.MOUSEBUTTON2) != 0)
                 {
                     delay = TickTimer.CreateFromSeconds(Runner, 0.5f);
                     Runner.Spawn(prefabRBBall,
-                      transform.position + forward,
-                      Quaternion.LookRotation(forward),
-                      Object.InputAuthority,
-                      (runner, o) =>
-                      {
-                          o.GetComponent<RBBall>().Init(10 * forward);
-                      });
-
+                    transform.position + forward,
+                    Quaternion.LookRotation(forward),
+                    Object.InputAuthority,
+                    (runner, o) =>
+                    {
+                        o.GetComponent<RBBall>().Init(10 * forward);
+                    });
                     spawned = !spawned;
                 }
             }
-        }
-    }
 
-    public override void Render()
-    {
-        material.color = Color.Lerp(material.color, Color.blue, Time.deltaTime);
+        }
     }
 }
