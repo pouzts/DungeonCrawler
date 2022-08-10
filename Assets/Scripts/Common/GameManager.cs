@@ -12,61 +12,60 @@ public class GameManager : Singleton<GameManager>
         LevelStart,
         Level,
         LevelEnd,
-        GameEnd,
         PlayerDead,
         GameOver,
         Win
     }
 
+    public eState GameState { get; set; }
+
     private delegate void GameEvent();
     private event GameEvent gameEvent;
-
-    private eState gameState = eState.Title;
-    public eState GetEState
-    {
-        get { return gameState; }
-        set 
-        { 
-            gameState = value;
-            switch (gameState)
-            {
-                case eState.Title:
-                    gameEvent = Title;
-                    break;
-                case eState.Lobby:
-                    gameEvent = Lobby;
-                    break;
-                case eState.GameStart:
-                    gameEvent = GameStart;
-                    break;
-                case eState.LevelStart:
-                    gameEvent = LevelStart;
-                    break;
-                case eState.Level:
-                    gameEvent = Level;
-                    break;
-                case eState.LevelEnd:
-                    break;
-                case eState.GameEnd:
-                    break;
-                case eState.PlayerDead:
-                    break;
-                case eState.GameOver:
-                    break;
-                case eState.Win:
-                    break;
-            }
-        }
-    }
+    
+    private float timer = 0f;
 
     void Start()
     {
-        
+        GameState = eState.Title;
     }
 
     void Update()
     {
-        gameEvent?.Invoke();
+        timer -= Time.deltaTime;
+
+        switch (GameState)
+        {
+            case eState.Title:
+                gameEvent = Title;
+                break;
+            case eState.Lobby:
+                gameEvent = Lobby;
+                break;
+            case eState.GameStart:
+                gameEvent = GameStart;
+                break;
+            case eState.LevelStart:
+                gameEvent = LevelStart;
+                break;
+            case eState.Level:
+                gameEvent = Level;
+                break;
+            case eState.LevelEnd:
+                gameEvent = LevelEnd;
+                break;
+            case eState.PlayerDead:
+                gameEvent = PlayerDead;
+                break;
+            case eState.GameOver:
+                gameEvent = GameOver;
+                break;
+            case eState.Win:
+                gameEvent = Win;
+                break;
+        }
+
+        if (timer <= 0)
+            gameEvent?.Invoke();
     }
 
     private void Title()
@@ -92,5 +91,25 @@ public class GameManager : Singleton<GameManager>
     private void Level()
     {
         
+    }
+
+    private void LevelEnd()
+    { 
+    
+    }
+
+    private void PlayerDead()
+    { 
+    
+    }
+
+    private void GameOver()
+    { 
+    
+    }
+
+    private void Win()
+    { 
+    
     }
 }
