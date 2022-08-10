@@ -4,26 +4,92 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public enum GameStates
+    public enum eState
     { 
         Title,
         Lobby,
-        StartGame,
+        GameStart,
+        LevelStart,
         Level,
-        EndGame,
-        Dead,
+        LevelEnd,
+        GameEnd,
+        PlayerDead,
         GameOver,
         Win
     }
 
-    // Start is called before the first frame update
+    private delegate void GameEvent();
+    private event GameEvent gameEvent;
+
+    private eState gameState = eState.Title;
+    public eState GetEState
+    {
+        get { return gameState; }
+        set 
+        { 
+            gameState = value;
+            switch (gameState)
+            {
+                case eState.Title:
+                    gameEvent = Title;
+                    break;
+                case eState.Lobby:
+                    gameEvent = Lobby;
+                    break;
+                case eState.GameStart:
+                    gameEvent = GameStart;
+                    break;
+                case eState.LevelStart:
+                    gameEvent = LevelStart;
+                    break;
+                case eState.Level:
+                    gameEvent = Level;
+                    break;
+                case eState.LevelEnd:
+                    break;
+                case eState.GameEnd:
+                    break;
+                case eState.PlayerDead:
+                    break;
+                case eState.GameOver:
+                    break;
+                case eState.Win:
+                    break;
+            }
+        }
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        gameEvent?.Invoke();
+    }
+
+    private void Title()
+    { 
+        
+    }
+
+    private void Lobby()
+    { 
+    
+    }
+
+    private void GameStart()
+    { 
+        
+    }
+
+    private void LevelStart()
+    { 
+    
+    }
+
+    private void Level()
     {
         
     }
