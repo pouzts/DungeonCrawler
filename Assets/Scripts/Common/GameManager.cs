@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] ScreenFade screenFade;
+    [SerializeField] SceneLoader sceneLoader;
+
     public enum eState
     { 
         Title,
@@ -17,7 +21,45 @@ public class GameManager : Singleton<GameManager>
         Win
     }
 
-    public eState GameState { get; set; }
+    private eState gameState = eState.Title;
+    public eState GameState 
+    { 
+        get { return gameState; }
+        set
+        {
+            gameState = value;
+            switch (gameState)
+            {
+                case eState.Title:
+                    gameEvent = Title;
+                    break;
+                case eState.Lobby:
+                    gameEvent = Lobby;
+                    break;
+                case eState.GameStart:
+                    gameEvent = GameStart;
+                    break;
+                case eState.LevelStart:
+                    gameEvent = LevelStart;
+                    break;
+                case eState.Level:
+                    gameEvent = Level;
+                    break;
+                case eState.LevelEnd:
+                    gameEvent = LevelEnd;
+                    break;
+                case eState.PlayerDead:
+                    gameEvent = PlayerDead;
+                    break;
+                case eState.GameOver:
+                    gameEvent = GameOver;
+                    break;
+                case eState.Win:
+                    gameEvent = Win;
+                    break;
+            }
+        }
+    }
 
     private delegate void GameEvent();
     private event GameEvent gameEvent;
@@ -27,49 +69,29 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         GameState = eState.Title;
+
+        SceneManager.activeSceneChanged += OnSceneWasLoaded;
+    }
+
+    void InitScene()
+    {
+        SceneDescriptor sceneDescriptor = FindObjectOfType<SceneDescriptor>();
+        if (sceneDescriptor != null)
+        {
+            Instantiate(sceneDescriptor.player, sceneDescriptor.playerSpawn.position, sceneDescriptor.playerSpawn.rotation);
+        }
     }
 
     void Update()
     {
         timer -= Time.deltaTime;
 
-        switch (GameState)
-        {
-            case eState.Title:
-                gameEvent = Title;
-                break;
-            case eState.Lobby:
-                gameEvent = Lobby;
-                break;
-            case eState.GameStart:
-                gameEvent = GameStart;
-                break;
-            case eState.LevelStart:
-                gameEvent = LevelStart;
-                break;
-            case eState.Level:
-                gameEvent = Level;
-                break;
-            case eState.LevelEnd:
-                gameEvent = LevelEnd;
-                break;
-            case eState.PlayerDead:
-                gameEvent = PlayerDead;
-                break;
-            case eState.GameOver:
-                gameEvent = GameOver;
-                break;
-            case eState.Win:
-                gameEvent = Win;
-                break;
-        }
-
         if (timer <= 0)
             gameEvent?.Invoke();
     }
 
     private void Title()
-    { 
+    {
         
     }
 
@@ -111,5 +133,10 @@ public class GameManager : Singleton<GameManager>
     private void Win()
     { 
     
+    }
+
+    private void OnSceneWasLoaded(Scene current, Scene next)
+    {
+        InitScene();
     }
 }
