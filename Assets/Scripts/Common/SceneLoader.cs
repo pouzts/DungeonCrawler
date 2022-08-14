@@ -1,53 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public static class SceneLoader
 {
-	[SerializeField] GameObject loadingUI;
-	[SerializeField] Slider loadingMeterUI;
-	[SerializeField] ScreenFade screenFade;
 
-	public void Load(string sceneName)
-	{
-		StartCoroutine(LoadScene(sceneName));
-	}
+    public static void Load(string sceneName)
+    {
+        if (!IsSceneLoaded(sceneName))
+            SceneManager.LoadScene(sceneName);
+    }
 
-	IEnumerator LoadScene(string sceneName)
-	{
-		Time.timeScale = 1;
+    public static void Load(string sceneName, LoadSceneMode sceneMode)
+    {
+        if (!IsSceneLoaded(sceneName))
+            SceneManager.LoadScene(sceneName, sceneMode);
+    }
 
-		// fade out screen
-		screenFade.FadeOut();
-		yield return new WaitUntil(() => screenFade.isDone);
+    public static bool IsSceneLoaded(string sceneName)
+    {
+        // loop through every scene in the project
+        for (int i = 0; i < SceneManager.sceneCount; i++)
+        {
+            // set scene to the scene index
+            Scene scene = SceneManager.GetSceneAt(i);
 
-		// load scene
-		AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-		asyncOperation.allowSceneActivation = false;
-		Pause.Instance.paused = false;
+            // if scene.name is equal to sceneName
+            if (scene.name == sceneName)
+                return true;
+        }
 
-		// show loading ui
-		loadingUI.SetActive(true);
-
-		// update progress meter
-		while (asyncOperation.progress < 0.9f)
-		{
-			loadingMeterUI.value = asyncOperation.progress;
-			yield return null;
-		}
-		loadingMeterUI.value = 1;
-		yield return new WaitForSeconds(1);
-
-		// hide loading ui
-		loadingUI.SetActive(false);
-		
-		// scene loaded / start
-		asyncOperation.allowSceneActivation = true;
-
-		// fade in screen
-		screenFade.FadeIn();
-		yield return new WaitUntil(() => screenFade.isDone);
-	}
+        return false;
+    }
 }

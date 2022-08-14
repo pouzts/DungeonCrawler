@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
-    [SerializeField] ScreenFade screenFade;
-    [SerializeField] SceneLoader sceneLoader;
+    //[SerializeField] ScreenFade screenFade;
+    //[SerializeField] SceneLoader sceneLoader;
 
     public enum eState
     { 
@@ -70,16 +70,7 @@ public class GameManager : Singleton<GameManager>
     {
         GameState = eState.Title;
 
-        SceneManager.activeSceneChanged += OnSceneWasLoaded;
-    }
-
-    void InitScene()
-    {
-        SceneDescriptor sceneDescriptor = FindObjectOfType<SceneDescriptor>();
-        if (sceneDescriptor != null)
-        {
-            Instantiate(sceneDescriptor.player, sceneDescriptor.playerSpawn.position, sceneDescriptor.playerSpawn.rotation);
-        }
+        //SceneManager.activeSceneChanged += OnSceneWasLoaded;
     }
 
     void Update()
@@ -88,6 +79,8 @@ public class GameManager : Singleton<GameManager>
 
         if (timer <= 0)
             gameEvent?.Invoke();
+
+        print(gameState);
     }
 
     private void Title()
@@ -133,10 +126,5 @@ public class GameManager : Singleton<GameManager>
     private void Win()
     { 
     
-    }
-
-    private void OnSceneWasLoaded(Scene current, Scene next)
-    {
-        InitScene();
     }
 }
