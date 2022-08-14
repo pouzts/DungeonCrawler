@@ -3208,6 +3208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fance (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 29d8e08572a52d843b6a4d548d40e2bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 29d8e08572a52d843b6a4d548d40e2bf, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -4482,7 +4486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b6e72273b8f5e1543b1b53816a974998, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15.01397
+      value: -13.76397
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b6e72273b8f5e1543b1b53816a974998, type: 3}
       propertyPath: m_LocalRotation.w
