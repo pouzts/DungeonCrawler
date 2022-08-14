@@ -79,6 +79,8 @@ public class GameManager : Singleton<GameManager>
 
         if (timer <= 0)
             gameEvent?.Invoke();
+
+        print(gameState);
     }
 
     private void Title()
