@@ -82,6 +82,7 @@ public class Player : NetworkBehaviour
             {
                 playerAnimator.SetBool("IsRunning", false);
             }
+            
 
             /*if (delay.ExpiredOrNotRunning(Runner))
             {

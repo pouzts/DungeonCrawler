@@ -1537,7 +1537,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.039637, y: 1}
+    m_SensorSize: {x: 0.93154037, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2640,12 +2640,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Head'\n\tTransform 'L_Index_2'\n\tTransform
-    'L_Shin'\n\tTransform 'L_Thigh'\n\tTransform 'L_Shoulder'\n\tTransform 'R_Shoulder'\n\tTransform
-    'R_Thigh'\n\tTransform 'L_Hand'\n\tTransform 'L_Bicep'\n\tTransform 'R_Bicep'\n\tand
-    more ...\n\tFrom animation clip 'Run'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
