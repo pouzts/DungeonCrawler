@@ -8,6 +8,7 @@ public class Player : NetworkBehaviour
 {
     [SerializeField] private Ball prefabBall;
     [SerializeField] private RBBall prefabRBBall;
+    [SerializeField] Animator playerAnimator;
     [Networked] private TickTimer delay { get; set; }
 
 
@@ -72,8 +73,15 @@ public class Player : NetworkBehaviour
         {
             data.direction.Normalize();
             characterControllerPrototype.Move(5 * data.direction * Runner.DeltaTime);
-
-            if(data.direction.sqrMagnitude > 0) forward = data.direction;
+            
+            if (data.direction.sqrMagnitude > 0)
+            {
+                playerAnimator.SetBool("IsRunning", true);
+                forward = data.direction;
+            }else
+            {
+                playerAnimator.SetBool("IsRunning", false);
+            }
 
             /*if (delay.ExpiredOrNotRunning(Runner))
             {
