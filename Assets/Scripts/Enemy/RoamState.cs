@@ -13,7 +13,7 @@ public class RoamState : State
     {
         Quaternion rotation = Quaternion.AngleAxis(Random.Range(-180, 180), Vector3.up);
         Vector3 forward = rotation * Vector3.forward;
-        Vector3 destination = owner.transform.position + forward * Random.Range(10f, 15f); // could be wrong
+        Vector3 destination = owner.transform.position + forward * Random.Range(-10f, 15f); // could be wrong
             
         owner.movement.MoveTowards(destination);
         owner.movement.Resume();
