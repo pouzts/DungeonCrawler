@@ -11,10 +11,10 @@ public class RoamState : State
 
     public override void OnEnter()
     {
-        Quaternion rotation = Quaternion.AngleAxis(Random.Range(-90, 90), Vector3.up);
+        Quaternion rotation = Quaternion.AngleAxis(Random.Range(-180, 180), Vector3.up);
         Vector3 forward = rotation * Vector3.forward;
         Vector3 destination = owner.transform.position + forward * Random.Range(10f, 15f); // could be wrong
-
+            
         owner.movement.MoveTowards(destination);
         owner.movement.Resume();
         owner.atDestination.value = false;
