@@ -44,12 +44,12 @@ public class Player : NetworkBehaviour
 
     public override void Render()
     {
-        material.color = Color.Lerp(material.color, Color.blue, Time.deltaTime);
+        //material.color = Color.Lerp(material.color, Color.blue, Time.deltaTime);
     }
 
     public static void OnBallSpawned(Changed<Player> changed)
     {
-        changed.Behaviour.material.color = Color.white;
+        //changed.Behaviour.material.color = Color.white;
     }
 
     private void Awake()
@@ -75,7 +75,7 @@ public class Player : NetworkBehaviour
 
             if(data.direction.sqrMagnitude > 0) forward = data.direction;
 
-            if (delay.ExpiredOrNotRunning(Runner))
+            /*if (delay.ExpiredOrNotRunning(Runner))
             {
 
                 //transform ball
@@ -105,7 +105,7 @@ public class Player : NetworkBehaviour
                     });
                     spawned = !spawned;
                 }
-            }
+            }*/
 
         }
     }
