@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Fusion;
+using Fusion.Sockets;
+using System;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -14,12 +17,17 @@ public class GameManager : Singleton<GameManager>
         Lobby,
         GameStart,
         LevelStart,
-        Level,
+        Game,
         LevelEnd,
         PlayerDead,
         GameOver,
         Win
     }
+
+    private bool isGameOver = false;
+    private bool isGameStart = false;
+
+    private float timer = 0f;
 
     private eState gameState = eState.Title;
     public eState GameState 
@@ -34,18 +42,23 @@ public class GameManager : Singleton<GameManager>
                     gameEvent = Title;
                     break;
                 case eState.Lobby:
+                    timer = 5f;
                     gameEvent = Lobby;
                     break;
                 case eState.GameStart:
+                    timer = 5f;
                     gameEvent = GameStart;
                     break;
                 case eState.LevelStart:
+                    timer = 5f;
                     gameEvent = LevelStart;
                     break;
-                case eState.Level:
-                    gameEvent = Level;
+                case eState.Game:
+                    timer = 5f;
+                    gameEvent = Game;
                     break;
                 case eState.LevelEnd:
+                    timer = 5f;
                     gameEvent = LevelEnd;
                     break;
                 case eState.PlayerDead:
@@ -63,12 +76,10 @@ public class GameManager : Singleton<GameManager>
 
     private delegate void GameEvent();
     private event GameEvent gameEvent;
-    
-    private float timer = 0f;
 
     void Start()
     {
-        GameState = eState.Title;
+        GameState = eState.Game;
 
         //SceneManager.activeSceneChanged += OnSceneWasLoaded;
     }
@@ -89,13 +100,15 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void Lobby()
-    { 
-    
+    {
+        if (isGameStart)
+            GameState = eState.GameStart;
     }
 
     private void GameStart()
-    { 
-        
+    {
+        isGameOver = false;
+        GameState = eState.LevelStart;
     }
 
     private void LevelStart()
@@ -103,7 +116,7 @@ public class GameManager : Singleton<GameManager>
     
     }
 
-    private void Level()
+    private void Game()
     {
         
     }
