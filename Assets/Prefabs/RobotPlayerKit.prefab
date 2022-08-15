@@ -1537,7 +1537,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.9221423, y: 1}
+    m_SensorSize: {x: 0.93154037, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -2308,6 +2308,7 @@ MonoBehaviour:
   _interpolationDataSource: 0
   prefabBall: {fileID: 217514005197426465, guid: 730d8d6701d43e04ea98facfc2ad97c2, type: 3}
   prefabRBBall: {fileID: 1470910623653562656, guid: 901b391f1dd9a024d8728afb83515e0c, type: 3}
+  playerAnimator: {fileID: 8584057851512483004}
   _spawned:
     _value: 1
 --- !u!1 &8236227658081028331
